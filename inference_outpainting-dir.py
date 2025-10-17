@@ -258,7 +258,10 @@ def main(
         fps_tensor = torch.tensor(video_batch_val["fps"]).to(device).unsqueeze(0)
         # negative_prompt = "noisy, low resolution, low quality, blurry, watermark, ugly, nude"
         negative_prompt = ""
-        target_size = [2*height, 2*width]
+        ratio_pool = [2, 2.5, 3]
+        height_ratio = random.choice(ratio_pool)
+        width_ratio = random.choice(ratio_pool)
+        target_size = [int(height_ratio*height), int(width_ratio*width)]
         canvas_sizes, use_multi_diff = get_canvas_size([height, width], target_size, min_overlap, [width_tile, height_tile])
         prompts = get_prompt(pixel_values_valid[0, video_length//2,:,:,:], lmm_tokenizer, lmm_model)
         for outpainting_round in range(len(canvas_sizes)):
